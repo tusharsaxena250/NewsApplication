@@ -1,21 +1,142 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<mat-accordion>
+  <mat-expansion-panel #mep="matExpansionPanel">
+    <mat-expansion-panel-header>
+      <mat-panel-title> 
+        <h2>
+          <span>
+            <mat-icon>language</mat-icon>
+            NEWS FOR YOU
+          </span>
+        </h2>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <h2>Experience the power of Information.</h2>
+    <mat-action-row>
+      <div style="padding-right: 500px;">
+        <h1><b><span><mat-icon>filter_list</mat-icon>Filters</span></b></h1>
+      </div>
+      
+      <div class="gridList" style="padding-right: 10%">
+        <h3>Topic</h3>
+        <br>
+        <mat-checkbox id="business">Business</mat-checkbox> <br/>
+        <mat-checkbox id="sports">Sports</mat-checkbox><br/>
+        <mat-checkbox id="technology">Technology</mat-checkbox><br/>
+      </div>
+      <div class="gridList" style="padding-right: 1%">
+        <h3>Date</h3>
+        <h5>From:</h5>
+        <mat-form-field style="width: 60%">
+          <input matInput [matDatepicker]="myDatePicker1" [min]="minDate" [max]="maxDate">
+            <mat-datepicker-toggle [for]="myDatePicker1" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #myDatePicker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="gridList" style="padding-top: 2%;">
+        <h5>To:</h5>
+        <mat-form-field style="width: 60%">
+          <input matInput [matDatepicker]="myDatePicker2" [min]="minDate" [max]="maxDate">
+            <mat-datepicker-toggle [for]="myDatePicker2" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #myDatePicker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div style="padding-top:100px; padding-right:10px;" >
+        <button (click)="mep.expanded=false;" mat-raised-button><b>Apply</b></button>
+      </div>
+    </mat-action-row>
+    <mat-action-row>
+        <div style="text-align:left; padding-right:480px; padding-top:10px">
+          <mat-form-field class="searchForm">
+              <input matInput placeholder="Search Topic" type="text">
+          </mat-form-field>
+          <button button="submit" (click)="mep.expanded=false;" mat-raised-button color="primary">Search</button>
+        </div>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
 
-<router-outlet></router-outlet>
+  <mat-toolbar color="primary">
+      <button mat-button (click)="sidenav.open()" ><mat-icon>menu</mat-icon></button>
+      <span>News Headlines</span>  
+      <span class="example-spacer"></span>
+      <button (click)="mep.expanded=true;"><mat-icon>filter_list</mat-icon></button>
+    </mat-toolbar>
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item> Settings </button>
+      <button mat-menu-item> Help </button>
+    </mat-menu>
+    <mat-sidenav-container class="example-container">
+      <mat-sidenav #sidenav class="example-sidenav">
+        <mat-list class="list-nav">
+            <mat-list-item class="list-item" *ngFor="let source of mSources" (click)="searchArticles(source.id);sidenav.close();">
+              <div mat-card-avatar [ngStyle]="{'background-image': 'url(../assets/images/'+ source.id +'.png)'}" class="example-header-image"></div>
+              <span class="source-name"> {{source.name}}</span>
+            </mat-list-item>
+        </mat-list>
+      </mat-sidenav>
+      <!-- <mat-sidenav-content>
+        <mat-grid-list cols="3" gutter-size="5px" class="gridList">
+          <div *ngFor="let article of mArticles">
+            <mat-grid-tile class="example-grid">
+              <mat-card class="example-card">
+                <mat-card-header>
+                  <div mat-card-avatar [ngStyle]="{'background-image': 'url(../assets/images/'+ article.source.id +'.png)'}" class="example-header-image"></div>
+                  <mat-card-title class="title">{{article.title}}</mat-card-title>
+                  <!-- <mat-card-subtitle>{{article.source.name}}</mat-card-subtitle> -->
+                <!--</mat-card-header>
+                <img mat-card-image class="img-article" src={{article.urlToImage}} alt="" style="height: 250px; width: 500px;">
+                <mat-card-content>
+                  <p>
+                    {{article.description}}
+                  </p>
+                </mat-card-content>
+                <mat-card-actions class="action-buttons">
+                    <mat-menu #tileMenu="matMenu">
+                      <button mat-menu-item><mat-icon>thumb_up_alt</mat-icon>Like</button>
+                      <button mat-menu-item><mat-icon>comment</mat-icon> Comments</button>
+                      <button mat-menu-item><mat-icon>share</mat-icon> Share</button>
+                    </mat-menu>
+                    <button mat-button [matMenuTriggerFor]="tileMenu">...</button>
+                  <a mat-button color="primary" href={{article.url}} target="_blank" ><mat-icon>visibility</mat-icon> More</a>
+                </mat-card-actions>
+              </mat-card>
+            </mat-grid-tile>
+          </div>
+        </mat-grid-list>
+      </mat-sidenav-content> -->
+      
+      
+      <div class="container"
+            fxLayout.xs="column"
+            fxLayoutWrap
+            fxLayoutAlign="center"
+            fxLayoutGap="0.2%"
+            fxLayoutGap.xs="0">
+          <mat-card class="example-card" *ngFor="let article of mArticles">
+            <mat-card-header class="example-head">
+              <div mat-card-avatar [ngStyle]="{'background-image': 'url(../assets/images/'+ article.source.id +'.png)'}" class="example-header-image"></div>
+              <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column" class="title">
+                  <span fxFlex="100%">{{article.title}}</span>
+              </mat-card-title>
+            </mat-card-header>  
+            <a href={{article.url}} target="_blank"><img mat-card-image class="img-article" src={{article.urlToImage}} alt=""></a>
+            <mat-card-content>
+              <p class="articleDiscription">
+                {{article.description}}
+              </p>
+            </mat-card-content>
+            <mat-card-actions class="action-buttons">
+                <mat-menu #tileMenu="matMenu">
+                  <button mat-menu-item><mat-icon>thumb_up_alt</mat-icon>Like</button>
+                  <button mat-menu-item><mat-icon>comment</mat-icon> Comments</button>
+                  <button mat-menu-item><mat-icon>share</mat-icon> Share</button>
+                </mat-menu>
+                <button mat-button [matMenuTriggerFor]="tileMenu">...</button>
+              <a mat-button color="primary" href={{article.url}} target="_blank" ><mat-icon>visibility</mat-icon> More</a>
+            </mat-card-actions>
+          </mat-card>
+
+        <!-- <div class="item_lists" fxFlex="30%">Item1</div> -->
+      </div>
+    </mat-sidenav-container>
+    
