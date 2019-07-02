@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NewsApiService } from './news-api.service';
+import { MatDatepicker } from '@angular/material';
+import { FormControl, Validators} from '@angular/forms';
+import { formatDate, DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -9,14 +12,19 @@ import { NewsApiService } from './news-api.service';
 export class AppComponent {
   minDate = new Date(2000, 0, 1);
   maxDate = new Date();
-  startDate = this.minDate;
-  stopDate = this.maxDate;
-  countryValue: String;
-  topicValue: String;
+  topic = new FormControl();
+  mD1 = new FormControl();
+  mD2 = new FormControl();
+  country = new FormControl();
+  // pipe = new DatePipe('en-US');
+  // mD11 = this.pipe.transform(this.mD1, 'yyyy-MM-dd')
+  // mD11 = formatDate(this.mD1, 'yyyy-MM-dd', 'en-US');
 
-  uodatePage = function() {
-    
-  };
+  // dateFilterUpdate(a, b) {
+  //   console.log(a);
+  //   console.log(b);
+  //   this.newsapi.getArticleByDateFilter(a, b).subscribe(data => this.mArticles = data['articles']);
+  // }
 
   mArticles: Array<any>;
   mSources: Array<any>;
@@ -30,5 +38,12 @@ export class AppComponent {
   searchArticles(source) {
     console.log("Selected source is: "+source);
     this.newsapi.getArticleByID(source).subscribe(data => this.mArticles = data['articles']);
+  }
+  updatePage(a) {
+    this.newsapi.getArticleByFilter(a).subscribe(data => this.mArticles = data['articles']);
+    console.log("Done");
+  };
+  updatePagebyDate(a, b) {
+    this.newsapi.getArticleByDateFilter(a, b).subscribe(data => this.mArticles = data['articles']);
   }
 }

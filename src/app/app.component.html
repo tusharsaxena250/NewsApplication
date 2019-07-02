@@ -12,22 +12,32 @@
     </mat-expansion-panel-header>
     <h2>Experience the power of Information.</h2>
     <mat-action-row>
-      <div style="padding-right: 500px;">
+      <div style="padding-right: 25%;">
         <h1><b><span><mat-icon>filter_list</mat-icon>Filters</span></b></h1>
       </div>
       
-      <div class="gridList" style="padding-right: 10%">
+      <!-- <div class="gridList" style="padding-right: 10%">
         <h3>Topic</h3>
         <br>
-        <mat-checkbox id="business">Business</mat-checkbox> <br/>
-        <mat-checkbox id="sports">Sports</mat-checkbox><br/>
-        <mat-checkbox id="technology">Technology</mat-checkbox><br/>
+          <mat-checkbox [formControl]="topic" value="business">Business</mat-checkbox> <br/>
+          <mat-checkbox [formControl]="topic" value="sports">Sports</mat-checkbox><br/>
+          <mat-checkbox [formControl]="topic" value="technology">Technology</mat-checkbox><br/>
+      </div> -->
+      <div class="gridList" style="padding-right: 10%">
+        <h3>Topic</h3>
+        <mat-button-toggle-group #toggleGroup="matButtonToggleGroup">
+          <mat-button-toggle value="business">Business</mat-button-toggle>
+          <mat-button-toggle value="sports">Sports</mat-button-toggle>
+          <mat-button-toggle value="technology">Technology</mat-button-toggle>
+        </mat-button-toggle-group>
+        <!-- {{toggleGroup.value}} -->
       </div>
+        
       <div class="gridList" style="padding-right: 1%">
         <h3>Date</h3>
         <h5>From:</h5>
         <mat-form-field style="width: 60%">
-          <input matInput [matDatepicker]="myDatePicker1" [min]="minDate" [max]="maxDate">
+          <input matInput [matDatepicker]="myDatePicker1" [formControl]="mD1" [min]="minDate" [max]="maxDate">
             <mat-datepicker-toggle [for]="myDatePicker1" matSuffix></mat-datepicker-toggle>
             <mat-datepicker #myDatePicker1></mat-datepicker>
         </mat-form-field>
@@ -35,21 +45,23 @@
       <div class="gridList" style="padding-top: 2%;">
         <h5>To:</h5>
         <mat-form-field style="width: 60%">
-          <input matInput [matDatepicker]="myDatePicker2" [min]="minDate" [max]="maxDate">
+          <input matInput [matDatepicker]="myDatePicker2" [formControl]="mD2" value="maxDate | date:'yyyy-MM-dd'" [min]="minDate" [max]="maxDate">
             <mat-datepicker-toggle [for]="myDatePicker2" matSuffix></mat-datepicker-toggle>
             <mat-datepicker #myDatePicker2></mat-datepicker>
         </mat-form-field>
+        <!-- {{mD1.value}} -->
       </div>
+      
       <div style="padding-top:100px; padding-right:10px;" >
-        <button (click)="mep.expanded=false;" mat-raised-button><b>Apply</b></button>
+        <button (click)="mep.expanded=false; updatePage(toggleGroup.value);" mat-raised-button><b>Apply</b></button>
       </div>
     </mat-action-row>
     <mat-action-row>
         <div style="text-align:left; padding-right:480px; padding-top:10px">
           <mat-form-field class="searchForm">
-              <input matInput placeholder="Search Topic" type="text">
+              <input matInput placeholder="Search Topic" [formControl]="topic" type="text">
           </mat-form-field>
-          <button button="submit" (click)="mep.expanded=false;" mat-raised-button color="primary">Search</button>
+          <button button="submit" (click)="mep.expanded=false; updatePage(topic.value);" mat-raised-button color="primary">Search</button>
         </div>
     </mat-action-row>
   </mat-expansion-panel>
@@ -74,38 +86,6 @@
             </mat-list-item>
         </mat-list>
       </mat-sidenav>
-      <!-- <mat-sidenav-content>
-        <mat-grid-list cols="3" gutter-size="5px" class="gridList">
-          <div *ngFor="let article of mArticles">
-            <mat-grid-tile class="example-grid">
-              <mat-card class="example-card">
-                <mat-card-header>
-                  <div mat-card-avatar [ngStyle]="{'background-image': 'url(../assets/images/'+ article.source.id +'.png)'}" class="example-header-image"></div>
-                  <mat-card-title class="title">{{article.title}}</mat-card-title>
-                  <!-- <mat-card-subtitle>{{article.source.name}}</mat-card-subtitle> -->
-                <!--</mat-card-header>
-                <img mat-card-image class="img-article" src={{article.urlToImage}} alt="" style="height: 250px; width: 500px;">
-                <mat-card-content>
-                  <p>
-                    {{article.description}}
-                  </p>
-                </mat-card-content>
-                <mat-card-actions class="action-buttons">
-                    <mat-menu #tileMenu="matMenu">
-                      <button mat-menu-item><mat-icon>thumb_up_alt</mat-icon>Like</button>
-                      <button mat-menu-item><mat-icon>comment</mat-icon> Comments</button>
-                      <button mat-menu-item><mat-icon>share</mat-icon> Share</button>
-                    </mat-menu>
-                    <button mat-button [matMenuTriggerFor]="tileMenu">...</button>
-                  <a mat-button color="primary" href={{article.url}} target="_blank" ><mat-icon>visibility</mat-icon> More</a>
-                </mat-card-actions>
-              </mat-card>
-            </mat-grid-tile>
-          </div>
-        </mat-grid-list>
-      </mat-sidenav-content> -->
-      
-      
       <div class="container"
             fxLayout.xs="column"
             fxLayoutWrap
